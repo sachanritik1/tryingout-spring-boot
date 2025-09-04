@@ -1,32 +1,30 @@
 package com.example.demo.controller;
 
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import com.example.demo.model.User;
+import com.example.demo.entities.User;
 import com.example.demo.services.UserService;
+
+import java.util.Optional;
 
 @RestController
 public class DemoController {
 
     @Autowired
-    UserService userService;
+    private UserService userService;
 
-    @GetMapping("/")
-    public String hello() {
-        return userService.getUser();
+    @GetMapping("/{id}")
+    public ResponseEntity<Optional<User>> hello(@PathVariable("id") String id) {
+        return new ResponseEntity<>(userService.getUser(id), HttpStatus.OK);
     }
 
-    @PostMapping("/post")
-    public String createUser(@RequestBody User user) {
-        userService.createUser(user);
-        return "User created successfully";
+    @PostMapping("/")
+    public ResponseEntity<User> createUser(@RequestBody User user) {
+        return new ResponseEntity<>(userService.createUser(user), HttpStatus.OK);
     }
 
     @PatchMapping("/patch")

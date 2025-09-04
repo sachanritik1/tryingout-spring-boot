@@ -1,26 +1,11 @@
 package com.example.demo.repositories;
 
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Component;
 
-import com.example.demo.model.User;
+import com.example.demo.entities.User;
 
 @Component
-public class UserRepository {
-
-    public String fetchUser() {
-        return "user";
-    }
-
-    public void saveUser(User user) {
-    }
-
-    public void updateUser(User user) {
-    }
-
-    public void replaceUser(User user) {
-    }
-
-    public void deleteUser(User user) {
-    }
-
+public interface UserRepository extends MongoRepository<User, ObjectId> {
 }
