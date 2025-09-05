@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entities.User;
-import com.example.demo.dto.CreateUserRequest;
 import com.example.demo.dto.UpdateUserRequest;
 import com.example.demo.services.UserService;
 
@@ -32,19 +31,6 @@ public class UserController {
             return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-
-    @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody CreateUserRequest req) {
-        try {
-            User user = userService.createUser(req);
-            if (user == null) {
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-            }
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 

@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "users")
 @Data
@@ -31,6 +32,8 @@ public class User {
     @NonNull
     @JsonProperty(access = Access.WRITE_ONLY)
     private String password;
+
+    private List<String> roles;
 
     private Date createdAt;
 

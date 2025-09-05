@@ -1,5 +1,6 @@
 package com.example.demo.services;
 
+import com.example.demo.config.SpringSecurity;
 import com.example.demo.dto.CreateUserRequest;
 import com.example.demo.dto.UpdateUserRequest;
 import com.example.demo.entities.Journal;
@@ -19,8 +20,15 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private SpringSecurity springSecurity;
+
     public User getUser(String id) {
         return userRepository.findById(new ObjectId(id)).orElse(null);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public List<User> getAllUsers() {
@@ -32,7 +40,8 @@ public class UserService {
         user.setId(ObjectId.get());
         user.setName(userRequest.getName());
         user.setEmail(userRequest.getEmail());
-        user.setPassword(userRequest.getPassword());
+        user.setPassword(springSecurity.passwordEncoder().encode(userRequest.getPassword()));
+        user.setRoles(List.of("USER"));
         Date now = new Date();
         user.setCreatedAt(now);
         user.setUpdatedAt(now);
@@ -66,6 +75,14 @@ public class UserService {
         User user = userRepository.findById(new ObjectId(userId)).orElse(null);
         if (user != null) {
             user.getJournals().add(journal);
+            userRepository.save(user);
+        }
+    }
+
+    public void removeJournalFromUser(String userId, Journal journal) {
+        User user = userRepository.findById(new ObjectId(userId)).orElse(null);
+        if (user != null) {
+            user.getJournals().remove(journal);
             userRepository.save(user);
         }
     }
