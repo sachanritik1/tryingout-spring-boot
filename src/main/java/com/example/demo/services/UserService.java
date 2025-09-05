@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dto.CreateUserRequest;
+import com.example.demo.dto.UpdateUserRequest;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.UserRepository;
 
@@ -31,15 +32,26 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void updateUser(User user) {
-
+    public User updateUser(String id, UpdateUserRequest user) {
+        User existingUser = this.getUser(id);
+        if (existingUser == null) {
+            throw new RuntimeException("User not found");
+        }
+        if (user.getName() != null) {
+            existingUser.setName(user.getName());
+        }
+        if (user.getEmail() != null) {
+            existingUser.setEmail(user.getEmail());
+        }
+        if (user.getPassword() != null) {
+            existingUser.setPassword(user.getPassword());
+        }
+        existingUser.setUpdatedAt(new Date());
+        userRepository.save(existingUser);
+        return existingUser;
     }
 
-    public void replaceUser(User user) {
-
-    }
-
-    public void deleteUser(User user) {
-
+    public void deleteUser(String id) {
+        userRepository.deleteById(new ObjectId(id));
     }
 }

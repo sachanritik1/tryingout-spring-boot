@@ -1,14 +1,10 @@
 package com.example.demo.dto;
 
 import lombok.Data;
-import lombok.NonNull;
 
 @Data
-public class CreateUserRequest {
-    @NonNull
+public class UpdateUserRequest {
     private String name;
-    @NonNull
     private String email;
-    @NonNull
     private String password;
 }

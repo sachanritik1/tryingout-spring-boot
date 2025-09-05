@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entities.User;
 import com.example.demo.dto.CreateUserRequest;
+import com.example.demo.dto.UpdateUserRequest;
 import com.example.demo.services.UserService;
 
 @RestController
@@ -25,7 +26,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<User> createUser(@RequestBody CreateUserRequest req) {
         try {
             User user = userService.createUser(req);
@@ -38,22 +39,27 @@ public class UserController {
         }
     }
 
-    @PatchMapping("/patch")
-    public String updateUser(@RequestBody User user) {
-        userService.updateUser(user);
-        return "User updated successfully";
+    @PatchMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") String id, @RequestBody UpdateUserRequest user) {
+        try {
+            User updatedUser = userService.updateUser(id, user);
+            if (updatedUser == null) {
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
-    @PutMapping("/put")
-    public String replaceUser(@RequestBody User user) {
-        userService.replaceUser(user);
-        return "User replaced successfully";
-    }
-
-    @DeleteMapping("/delete")
-    public String deleteUser(@RequestBody User user) {
-        userService.deleteUser(user);
-        return "User deleted successfully";
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable("id") String id) {
+        try {
+            userService.deleteUser(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 
 }
