@@ -8,6 +8,8 @@ import com.example.demo.repositories.UserRepository;
 
 import org.bson.types.ObjectId;
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +21,10 @@ public class UserService {
 
     public User getUser(String id) {
         return userRepository.findById(new ObjectId(id)).orElse(null);
+    }
+
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
     public User createUser(CreateUserRequest userRequest) {

@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import java.util.Date;
+import java.util.List;
 
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,10 @@ public class JournalService {
 
     @Autowired
     private UserService userService;
+
+    public List<Journal> getAllJournals() {
+        return journalRepository.findAll();
+    }
 
     @Transactional
     public Journal createJournal(CreateJournalRequest journal) {
