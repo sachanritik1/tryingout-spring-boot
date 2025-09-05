@@ -36,7 +36,7 @@ public class User {
 
     private Date updatedAt;
 
-    @DBRef(db = "journals")
+    @DBRef
     private ArrayList<Journal> journals = new ArrayList<>();
 
     // Expose id as hex string for JSON consumers if needed

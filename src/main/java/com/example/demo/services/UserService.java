@@ -56,8 +56,8 @@ public class UserService {
         userRepository.deleteById(new ObjectId(id));
     }
 
-    public void addJournalToUser(ObjectId userId, Journal journal) {
-        User user = userRepository.findById(userId).orElse(null);
+    public void addJournalToUser(String userId, Journal journal) {
+        User user = userRepository.findById(new ObjectId(userId)).orElse(null);
         if (user != null) {
             user.getJournals().add(journal);
             userRepository.save(user);

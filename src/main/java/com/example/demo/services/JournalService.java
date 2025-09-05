@@ -30,10 +30,9 @@ public class JournalService {
         Date now = new Date();
         newJournal.setCreatedAt(now);
         newJournal.setUpdatedAt(now);
-        newJournal.setUser(userService.getUser(journal.getUserId()));
 
         Journal savedJournal = journalRepository.save(newJournal);
-        userService.addJournalToUser(savedJournal.getUser().getId(), savedJournal);
+        userService.addJournalToUser(journal.getAuthorId(), savedJournal);
         return savedJournal;
     }
 
@@ -56,9 +55,7 @@ public class JournalService {
         if (journal.getContent() != null) {
             existingJournal.setContent(journal.getContent());
         }
-        if (journal.getUserId() != null) {
-            existingJournal.setUser(userService.getUser(journal.getUserId()));
-        }
+
         existingJournal.setUpdatedAt(new Date());
         journalRepository.save(existingJournal);
         return existingJournal;

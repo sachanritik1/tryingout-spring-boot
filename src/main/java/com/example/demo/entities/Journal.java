@@ -6,8 +6,6 @@ import lombok.NonNull;
 import lombok.NoArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.Date;
@@ -28,10 +26,6 @@ public class Journal {
     private Date createdAt;
 
     private Date updatedAt;
-
-    @Indexed(unique = true)
-    @DBRef(db = "users")
-    private User user;
 
     // Expose id as hex string for JSON consumers if needed
     public String getIdString() {

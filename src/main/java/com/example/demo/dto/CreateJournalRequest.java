@@ -10,5 +10,5 @@ public class CreateJournalRequest {
     @NonNull
     private String content;
     @NonNull
-    private String userId;
+    private String authorId;
 }

@@ -9,5 +9,4 @@ public class UpdateJournalRequest {
 
     private String content;
 
-    private String userId;
 }
