@@ -1,0 +1,67 @@
+package com.example.demo.services;
+
+import java.util.Date;
+
+import org.bson.types.ObjectId;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.example.demo.dto.CreateJournalRequest;
+import com.example.demo.dto.UpdateJournalRequest;
+import com.example.demo.entities.Journal;
+import com.example.demo.repositories.JournalRepository;
+
+@Service
+public class JournalService {
+
+    @Autowired
+    private JournalRepository journalRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Transactional
+    public Journal createJournal(CreateJournalRequest journal) {
+        Journal newJournal = new Journal();
+        newJournal.setId(ObjectId.get());
+        newJournal.setTitle(journal.getTitle());
+        newJournal.setContent(journal.getContent());
+        Date now = new Date();
+        newJournal.setCreatedAt(now);
+        newJournal.setUpdatedAt(now);
+        newJournal.setUser(userService.getUser(journal.getUserId()));
+
+        Journal savedJournal = journalRepository.save(newJournal);
+        userService.addJournalToUser(savedJournal.getUser().getId(), savedJournal);
+        return savedJournal;
+    }
+
+    public Journal getJournal(String id) {
+        return journalRepository.findById(new ObjectId(id)).orElse(null);
+    }
+
+    public void deleteJournal(String id) {
+        journalRepository.deleteById(new ObjectId(id));
+    }
+
+    public Journal updateJournal(String id, UpdateJournalRequest journal) {
+        Journal existingJournal = this.getJournal(id);
+        if (existingJournal == null) {
+            throw new RuntimeException("Journal not found");
+        }
+        if (journal.getTitle() != null) {
+            existingJournal.setTitle(journal.getTitle());
+        }
+        if (journal.getContent() != null) {
+            existingJournal.setContent(journal.getContent());
+        }
+        if (journal.getUserId() != null) {
+            existingJournal.setUser(userService.getUser(journal.getUserId()));
+        }
+        existingJournal.setUpdatedAt(new Date());
+        journalRepository.save(existingJournal);
+        return existingJournal;
+    }
+
+}

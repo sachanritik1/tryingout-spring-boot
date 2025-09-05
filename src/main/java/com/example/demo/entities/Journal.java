@@ -1,7 +1,6 @@
+
 package com.example.demo.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.NoArgsConstructor;
@@ -11,33 +10,28 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.ArrayList;
 import java.util.Date;
 
-@Document(collection = "users")
+@Document(collection = "journals")
 @Data
 @NoArgsConstructor
-public class User {
-
+public class Journal {
     @Id
     private ObjectId id;
 
     @NonNull
-    private String name;
-
-    @Indexed(unique = true)
-    private String email;
+    private String title;
 
     @NonNull
-    @JsonProperty(access = Access.WRITE_ONLY)
-    private String password;
+    private String content;
 
     private Date createdAt;
 
     private Date updatedAt;
 
-    @DBRef(db = "journals")
-    private ArrayList<Journal> journals = new ArrayList<>();
+    @Indexed(unique = true)
+    @DBRef(db = "users")
+    private User user;
 
     // Expose id as hex string for JSON consumers if needed
     public String getIdString() {

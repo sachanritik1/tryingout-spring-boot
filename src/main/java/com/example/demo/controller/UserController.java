@@ -11,6 +11,7 @@ import com.example.demo.dto.UpdateUserRequest;
 import com.example.demo.services.UserService;
 
 @RestController
+@RequestMapping("/users")
 public class UserController {
 
     @Autowired

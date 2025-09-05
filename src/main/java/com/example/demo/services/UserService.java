@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dto.CreateUserRequest;
 import com.example.demo.dto.UpdateUserRequest;
+import com.example.demo.entities.Journal;
 import com.example.demo.entities.User;
 import com.example.demo.repositories.UserRepository;
 
@@ -53,5 +54,13 @@ public class UserService {
 
     public void deleteUser(String id) {
         userRepository.deleteById(new ObjectId(id));
+    }
+
+    public void addJournalToUser(ObjectId userId, Journal journal) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.getJournals().add(journal);
+            userRepository.save(user);
+        }
     }
 }
