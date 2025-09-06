@@ -9,6 +9,4 @@ public class CreateJournalRequest {
     private String title;
     @NonNull
     private String content;
-    @NonNull
-    private String authorId;
 }

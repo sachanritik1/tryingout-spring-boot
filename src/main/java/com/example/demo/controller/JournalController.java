@@ -37,7 +37,10 @@ public class JournalController {
     @PostMapping
     public ResponseEntity<Journal> createJournal(@RequestBody CreateJournalRequest req) {
         try {
-            Journal journal = journalService.createJournal(req);
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String email = authentication.getName();
+            Journal journal = journalService.createJournal(req, email);
+
             if (journal == null) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }

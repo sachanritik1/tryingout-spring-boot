@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.dto.CreateJournalRequest;
 import com.example.demo.dto.UpdateJournalRequest;
 import com.example.demo.entities.Journal;
-import com.example.demo.entities.User;
 import com.example.demo.repositories.JournalRepository;
 
 @Service
@@ -28,7 +27,7 @@ public class JournalService {
     }
 
     @Transactional
-    public Journal createJournal(CreateJournalRequest journal) {
+    public Journal createJournal(CreateJournalRequest journal, String email) {
         Journal newJournal = new Journal();
         newJournal.setId(ObjectId.get());
         newJournal.setTitle(journal.getTitle());
@@ -38,7 +37,7 @@ public class JournalService {
         newJournal.setUpdatedAt(now);
 
         Journal savedJournal = journalRepository.save(newJournal);
-        userService.addJournalToUser(journal.getAuthorId(), savedJournal);
+        userService.addJournalToUser(email, savedJournal);
         return savedJournal;
     }
 
@@ -48,18 +47,12 @@ public class JournalService {
 
     @Transactional
     public void deleteJournal(String id, String email) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
         Journal journal = this.getJournal(id);
         if (journal == null) {
             throw new RuntimeException("Journal not found");
         }
-        if (!user.getJournals().contains(journal)) {
-            throw new RuntimeException("Unauthorized to delete this journal");
-        }
-        userService.removeJournalFromUser(user.getId().toHexString(), journal);
+
+        userService.removeJournalFromUser(email, journal);
         journalRepository.deleteById(new ObjectId(id));
     }
 

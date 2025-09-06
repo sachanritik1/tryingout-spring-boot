@@ -71,19 +71,24 @@ public class UserService {
         userRepository.deleteById(new ObjectId(id));
     }
 
-    public void addJournalToUser(String userId, Journal journal) {
-        User user = userRepository.findById(new ObjectId(userId)).orElse(null);
-        if (user != null) {
-            user.getJournals().add(journal);
-            userRepository.save(user);
+    public void addJournalToUser(String email, Journal journal) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found");
         }
+        user.getJournals().add(journal);
+        userRepository.save(user);
     }
 
-    public void removeJournalFromUser(String userId, Journal journal) {
-        User user = userRepository.findById(new ObjectId(userId)).orElse(null);
-        if (user != null) {
-            user.getJournals().remove(journal);
-            userRepository.save(user);
+    public void removeJournalFromUser(String email, Journal journal) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found");
         }
+        if (!user.getJournals().contains(journal)) {
+            throw new RuntimeException("Journal not found in user's journals");
+        }
+        user.getJournals().remove(journal);
+        userRepository.save(user);
     }
 }
