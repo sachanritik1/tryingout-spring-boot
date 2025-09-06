@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +27,14 @@ public class JournalController {
 
     @Autowired
     private JournalService journalService;
+
+    @GetMapping
+    public ResponseEntity<List<Journal>> hello() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        List<Journal> journals = journalService.getAllJournals(email);
+        return new ResponseEntity<>(journals, HttpStatus.OK);
+    }
 
     @PostMapping
     public ResponseEntity<Journal> createJournal(@RequestBody CreateJournalRequest req) {

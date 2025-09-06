@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.dto.CreateJournalRequest;
 import com.example.demo.dto.UpdateJournalRequest;
 import com.example.demo.entities.Journal;
+import com.example.demo.entities.User;
 import com.example.demo.repositories.JournalRepository;
 
 @Service
@@ -24,6 +25,11 @@ public class JournalService {
 
     public List<Journal> getAllJournals() {
         return journalRepository.findAll();
+    }
+
+    public List<Journal> getAllJournals(String email) {
+        User user = userService.getUserByEmail(email);
+        return user.getJournals();
     }
 
     @Transactional
