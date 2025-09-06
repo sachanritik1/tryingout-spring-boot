@@ -1,12 +1,8 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.demo.entities.User;
@@ -19,18 +15,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
-    @GetMapping
-    public ResponseEntity<List<User>> getAllUsers() {
-        try {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String email = authentication.getName();
-            List<User> users = userService.getAllUsers(email);
-            return new ResponseEntity<>(users, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-    }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> hello(@PathVariable("id") String id) {

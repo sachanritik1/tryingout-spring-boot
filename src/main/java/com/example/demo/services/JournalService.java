@@ -11,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.example.demo.dto.CreateJournalRequest;
 import com.example.demo.dto.UpdateJournalRequest;
 import com.example.demo.entities.Journal;
-import com.example.demo.entities.User;
 import com.example.demo.repositories.JournalRepository;
 
 @Service
@@ -23,14 +22,7 @@ public class JournalService {
     @Autowired
     private UserService userService;
 
-    public List<Journal> getAllJournals(String email) {
-        User user = userService.getUserByEmail(email);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-        if (!user.getRoles().contains("ADMIN")) {
-            return user.getJournals();
-        }
+    public List<Journal> getAllJournals() {
         return journalRepository.findAll();
     }
 
