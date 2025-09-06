@@ -31,7 +31,14 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public List<User> getAllUsers() {
+    public List<User> getAllUsers(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        if (!user.getRoles().contains("ADMIN")) {
+            throw new RuntimeException("Access denied");
+        }
         return userRepository.findAll();
     }
 

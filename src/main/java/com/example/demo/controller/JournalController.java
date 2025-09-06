@@ -30,7 +30,9 @@ public class JournalController {
 
     @GetMapping
     public ResponseEntity<List<Journal>> getAllJournals() {
-        List<Journal> journals = journalService.getAllJournals();
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+        List<Journal> journals = journalService.getAllJournals(email);
         return new ResponseEntity<>(journals, HttpStatus.OK);
     }
 
