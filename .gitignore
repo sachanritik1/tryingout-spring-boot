@@ -60,3 +60,5 @@ application-*.local.yml
 # Other
 *.swp
 *.swo
+
+application.properties

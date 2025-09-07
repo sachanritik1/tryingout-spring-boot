@@ -9,18 +9,12 @@ import org.springframework.data.mongodb.config.EnableMongoAuditing;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 @SpringBootApplication
 @EnableMongoAuditing
 @EnableTransactionManagement
 public class DemoApplication {
 
 	public static void main(String[] args) {
-
-		Dotenv dotenv = Dotenv.load();
-		System.setProperty("MONGODB_URI", dotenv.get("MONGODB_URI"));
-
 		SpringApplication.run(DemoApplication.class, args);
 	}
 
